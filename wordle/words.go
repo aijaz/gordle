@@ -4,25 +4,41 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"log"
 	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
-var words = make(map[string]bool)
+var validWords = make(map[string]bool)
 
 func GetSecretWord() string {
-	if len(words) == 0 {
+	if len(validWords) == 0 {
 		populateWords()
 	}
-	index := rand.Intn(len(words))
-	for k := range words {
-		if index == 0 {
-			return k
-		}
-		index--
+
+	fileBytes, err := os.ReadFile("wordle/secretWords.txt")
+
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
-	return ""
+
+	rand.Seed(time.Now().UnixNano())
+	secretWords := strings.Split(string(fileBytes), "\n")
+	index := rand.Intn(len(secretWords))
+	return strings.ToUpper(secretWords[index])
+
+	//
+	//index := rand.Intn(len(validWords))
+	//for k := range validWords {
+	//	if index == 0 {
+	//		return k
+	//	}
+	//	index--
+	//}
+	//return ""
 }
 
 func GetGuess() (string, error) {
@@ -33,7 +49,7 @@ func GetGuess() (string, error) {
 		return "", err
 	}
 	word = strings.ToUpper(word)
-	if !words[word] {
+	if !validWords[word] {
 		return "", errors.New("this is not a valid word")
 	}
 	if len(word) != 5 {
@@ -44,30 +60,26 @@ func GetGuess() (string, error) {
 }
 
 func populateWords() {
-	words["ARISE"] = true
-	words["BROOK"] = true
-	words["COUNT"] = true
-	words["DENIM"] = true
-	words["ENJOY"] = true
-	words["FLOAT"] = true
-	words["OCEAN"] = true
-}
+	validWords["ARISE"] = true
+	validWords["BROOK"] = true
+	validWords["COUNT"] = true
+	validWords["DENIM"] = true
+	validWords["ENJOY"] = true
+	validWords["FLOAT"] = true
+	validWords["OCEAN"] = true
 
-// readLines reads a whole file into memory
-// and returns a slice of its lines.
-func readLines(path string) ([]string, error) {
-	file, err := os.Open(path)
+	file, err := os.Open("wordle/all5.txt")
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
-	defer func(file *os.File) {
-		_ = file.Close()
-	}(file)
+	defer file.Close()
 
-	var lines []string
 	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
+	// optionally, resize scanner's capacity for lines over 64K, see next example
+	scanner.Scan()
+	line := scanner.Text()
+	words := strings.Split(line, ",")
+	for _, word := range words {
+		validWords[word] = true
 	}
-	return lines, scanner.Err()
 }

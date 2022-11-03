@@ -14,6 +14,7 @@ func main() {
 	var historyEmoji [6][5]string
 	var historyString [6]string
 
+	fmt.Println("secretWord is", secretWord)
 	for {
 		var emoji [5]string
 
