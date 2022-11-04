@@ -1,6 +1,6 @@
 package wordle
 
-import "strings"
+import "fmt"
 
 func ProcessGuess(secretWord string, guess string) ([5]string, bool) {
 	if secretWord == guess {
@@ -10,25 +10,48 @@ func ProcessGuess(secretWord string, guess string) ([5]string, bool) {
 	for i := range guess {
 		if guess[i] == secretWord[i] {
 			result[i] = "🟩"
-		} else if !strings.Contains(secretWord, string(guess[i])) {
-			result[i] = "🟥"
 		}
 	}
+
+	// yellow
+	used := [5]bool{}
+
+	for i := range guess {
+		if result[i] != "" {
+			// skip over green slots
+			continue
+		}
+		for j := range secretWord {
+			if result[j] == "🟩" {
+				// skip over filled slots
+				continue
+			}
+			//if !strings.Contains(secretWord, string(guess[i])) {
+			//	continue
+			//}
+			fmt.Println(secretWord, guess, i, j, used)
+			if secretWord[j] == guess[i] && !used[j] {
+				fmt.Println("Changing to yellow")
+				result[i] = "🟨"
+				used[j] = true
+				//} else {
+				//	result[i] = "🟥"
+			}
+			fmt.Println("  ", used)
+		}
+	}
+
+	// reds
 	for i := range guess {
 		if result[i] != "" {
 			// skip over filled-in slots
 			continue
 		}
-		for j := range secretWord {
-			if result[j] != "" {
-				continue
-			}
-			if secretWord[j] == guess[i] {
-				result[i] = "🟨"
-			} else {
-				result[i] = "🟥"
-			}
-		}
+		result[i] = "🟥"
+		//if !strings.Contains(secretWord, string(guess[i])) {
+		//	result[i] = "🟥"
+		//}
 	}
+
 	return result, false
 }

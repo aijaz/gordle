@@ -30,12 +30,13 @@ func TestProcessGuess(t *testing.T) {
 		emoji     [5]string
 		isCorrect bool
 	}{
-		{"Correct Guess", args{"HELLO", "HELLO"}, [5]string{"🟩", "🟩", "🟩", "🟩", "🟩"}, true},
-		{"One Wrong", args{"PARTS", "DARTS"}, [5]string{"🟥", "🟩", "🟩", "🟩", "🟩"}, false},
-		{"One misplaced", args{"HACKS", "SACKS"}, [5]string{"🟨", "🟩", "🟩", "🟩", "🟩"}, false},
-		{"One of 2 misplaced", args{"EAGER", "EAGLE"}, [5]string{"🟩", "🟩", "🟩", "🟥", "🟨"}, false},
-		{"One right one wrong", args{"EARNS", "EAGLE"}, [5]string{"🟩", "🟩", "🟥", "🟥", "🟥"}, false},
-		{"One right one wrong", args{"STILL", "LOLLS"}, [5]string{"🟨", "🟥", "🟥", "🟩", "🟨"}, false},
+		{"HELLO HELLO", args{"HELLO", "HELLO"}, [5]string{"🟩", "🟩", "🟩", "🟩", "🟩"}, true},
+		{"PARTS DARTS", args{"PARTS", "DARTS"}, [5]string{"🟥", "🟩", "🟩", "🟩", "🟩"}, false},
+		{"HACKS SACKS", args{"HACKS", "SACKS"}, [5]string{"🟥", "🟩", "🟩", "🟩", "🟩"}, false},
+		{"EAGER EAGLE", args{"EAGER", "EAGLE"}, [5]string{"🟩", "🟩", "🟩", "🟥", "🟨"}, false},
+		{"EARNS EAGLE", args{"EARNS", "EAGLE"}, [5]string{"🟩", "🟩", "🟥", "🟥", "🟥"}, false},
+		{"STILL LOLLS", args{"STILL", "LOLLS"}, [5]string{"🟨", "🟥", "🟥", "🟩", "🟨"}, false},
+		{"AABBB BBAAA", args{"AABBB", "BBAAA"}, [5]string{"🟨", "🟨", "🟨", "🟨", "🟥"}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
