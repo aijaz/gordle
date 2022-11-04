@@ -37,6 +37,10 @@ func TestProcessGuess(t *testing.T) {
 		{"EARNS EAGLE", args{"EARNS", "EAGLE"}, [5]string{"🟩", "🟩", "🟥", "🟥", "🟥"}, false},
 		{"STILL LOLLS", args{"STILL", "LOLLS"}, [5]string{"🟨", "🟥", "🟥", "🟩", "🟨"}, false},
 		{"AABBB BBAAA", args{"AABBB", "BBAAA"}, [5]string{"🟨", "🟨", "🟨", "🟨", "🟥"}, false},
+		{"AABBB BBAAB", args{"AABBB", "BBAAB"}, [5]string{"🟨", "🟨", "🟨", "🟨", "🟩"}, false},
+		{"AABBB BBACA", args{"AABBB", "BBACA"}, [5]string{"🟨", "🟨", "🟨", "🟥", "🟨"}, false},
+		{"ABABA BABAB", args{"ABABA", "BABAB"}, [5]string{"🟨", "🟨", "🟨", "🟨", "🟥"}, false},
+		{"ABABA BABAB", args{"ABABA", "BABAB"}, [5]string{"🟨", "🟨", "🟨", "🟨", "🟥"}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
