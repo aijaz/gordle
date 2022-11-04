@@ -35,6 +35,7 @@ func TestProcessGuess(t *testing.T) {
 		{"One misplaced", args{"HACKS", "SACKS"}, [5]string{"🟨", "🟩", "🟩", "🟩", "🟩"}, false},
 		{"One of 2 misplaced", args{"EAGER", "EAGLE"}, [5]string{"🟩", "🟩", "🟩", "🟥", "🟨"}, false},
 		{"One right one wrong", args{"EARNS", "EAGLE"}, [5]string{"🟩", "🟩", "🟥", "🟥", "🟥"}, false},
+		{"One right one wrong", args{"STILL", "LOLLS"}, [5]string{"🟨", "🟥", "🟥", "🟩", "🟨"}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
